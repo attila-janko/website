@@ -11,25 +11,31 @@ setInterval(() => {
   heroText.textContent = slogans[sloganIndex];
 }, 3000);
 
-// event loading with search support
-const loadEvents = (query = '') => {
-  const list = document.getElementById('event-list');
+// event loading with search support (local JSON)
+const list = document.getElementById('event-list');
+let eventsCache = [];
+
+const renderEvents = (events) => {
+  list.textContent = '';
+  if (events.length === 0) {
+    list.textContent = 'No events found.';
+    return;
+  }
+  events.forEach((event) => {
+    const div = document.createElement('div');
+    div.className = 'event';
+    div.innerHTML = `<strong>${event.title}</strong> - ${event.date} @ ${event.location}`;
+    list.appendChild(div);
+  });
+};
+
+const loadEvents = () => {
   list.textContent = 'Loading events...';
-  const url = '/api/events' + (query ? `?q=${encodeURIComponent(query)}` : '');
-  fetch(url)
+  fetch('events.json')
     .then((res) => res.json())
     .then((events) => {
-      list.textContent = '';
-      if (events.length === 0) {
-        list.textContent = 'No events found.';
-        return;
-      }
-      events.forEach((event) => {
-        const div = document.createElement('div');
-        div.className = 'event';
-        div.innerHTML = `<strong>${event.title}</strong> - ${event.date} @ ${event.location}`;
-        list.appendChild(div);
-      });
+      eventsCache = events;
+      renderEvents(eventsCache);
     })
     .catch(() => {
       list.textContent = 'Error loading events.';
@@ -38,8 +44,15 @@ const loadEvents = (query = '') => {
 
 const search = document.getElementById('event-search');
 if (search) {
-  search.addEventListener('input', (e) => loadEvents(e.target.value));
+  search.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    const filtered = eventsCache.filter((event) =>
+      event.title.toLowerCase().includes(term)
+    );
+    renderEvents(filtered);
+  });
 }
+
 loadEvents();
 
 // theme toggle
@@ -69,25 +82,24 @@ menuToggle.addEventListener('click', () => {
   nav.classList.toggle('open');
 });
 
-// subscribe form
+// subscribe form (local storage)
 const form = document.getElementById('subscribe-form');
 const msg = document.getElementById('form-msg');
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const email = form.querySelector('input[type="email"]').value;
-  fetch('/api/subscribe', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email }),
-  })
-    .then(() => {
+if (form) {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = form.querySelector('input[type="email"]').value;
+    try {
+      const subs = JSON.parse(localStorage.getItem('tk-subscribers') || '[]');
+      subs.push(email);
+      localStorage.setItem('tk-subscribers', JSON.stringify(subs));
       msg.textContent = 'Thanks for joining the movement!';
       form.reset();
-    })
-    .catch(() => {
+    } catch {
       msg.textContent = 'Subscription failed.';
-    });
-});
+    }
+  });
+}
 
 // set current year
 document.getElementById('year').textContent = new Date().getFullYear();

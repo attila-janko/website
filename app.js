@@ -32,13 +32,18 @@ fetch('events.json')
 const themeToggle = document.getElementById('theme-toggle');
 const body = document.body;
 const setTheme = (dark) => {
-  dark ? body.classList.add('dark') : body.classList.remove('dark');
-  themeToggle.textContent = dark ? '☀️' : '🌙';
+  if (dark) {
+    body.classList.remove('light');
+    themeToggle.textContent = '☀️';
+  } else {
+    body.classList.add('light');
+    themeToggle.textContent = '🌙';
+  }
 };
-setTheme(localStorage.getItem('theme') === 'dark');
+setTheme(localStorage.getItem('theme') !== 'light');
 
 themeToggle.addEventListener('click', () => {
-  const dark = !body.classList.contains('dark');
+  const dark = body.classList.contains('light');
   setTheme(dark);
   localStorage.setItem('theme', dark ? 'dark' : 'light');
 });
@@ -61,3 +66,15 @@ form.addEventListener('submit', (e) => {
 
 // set current year
 document.getElementById('year').textContent = new Date().getFullYear();
+
+// scroll reveal
+const observer = new IntersectionObserver((entries, obs) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+      obs.unobserve(entry.target);
+    }
+  });
+});
+
+document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));

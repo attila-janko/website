@@ -1,12 +1,14 @@
 :root {
-  --bg: #ffffff;
-  --text: #111111;
-  --accent: #ff0055;
+  --bg: #000000;
+  --text: #f5f5f5;
+  --accent: #ff0033;
+  --alt-bg: #111111;
 }
 
-body.dark {
-  --bg: #111111;
-  --text: #f9f9f9;
+body.light {
+  --bg: #ffffff;
+  --text: #111111;
+  --alt-bg: #f2f2f2;
 }
 
 body {
@@ -26,7 +28,7 @@ body {
   top: 0;
   background: var(--bg);
   z-index: 100;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(255,0,51,0.2);
 }
 
 .logo {
@@ -38,6 +40,10 @@ body {
   margin: 0 1rem;
   text-decoration: none;
   color: var(--text);
+}
+
+.nav a:hover {
+  color: var(--accent);
 }
 
 #theme-toggle {
@@ -80,8 +86,8 @@ body {
   align-items: center;
   justify-content: center;
   height: 60vh;
-  background: linear-gradient(135deg, #ff0055, #ff5500);
-  color: #ffffff;
+  background: linear-gradient(135deg, #000000, #330000);
+  color: var(--accent);
   text-align: center;
 }
 
@@ -90,7 +96,18 @@ body {
 }
 
 .section.alt {
-  background: #f2f2f2;
+  background: var(--alt-bg);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .dj-list {
@@ -109,13 +126,21 @@ body {
 }
 
 .events .event {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--accent);
   padding: 1rem 0;
 }
 
 .subscribe input {
   padding: 0.5rem;
   margin-right: 0.5rem;
+}
+
+.subscribe button {
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 }
 
 .footer {

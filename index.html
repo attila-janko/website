@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terra Kontra</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1 class="logo">Terra Kontra</h1>
+    <nav id="nav" class="nav">
+      <a href="#about">About</a>
+      <a href="#festival">Festival</a>
+      <a href="#djs">DJs</a>
+      <a href="#events">Events</a>
+      <a href="#contact">Contact</a>
+      <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
+    </nav>
+    <button id="menu-toggle" aria-label="Toggle menu" class="hamburger">☰</button>
+  </header>
+
+  <section id="hero" class="hero">
+    <h2 id="hero-text">Feel the bass</h2>
+  </section>
+
+  <section id="about" class="section">
+    <h2>About Terra Kontra</h2>
+    <p>Terra Kontra is a collective of boundary pushing DJs and artists determined to shake the planet with underground sound. From warehouse raves to sun‑rise beach sets, we exist to amplify community, culture and raw energy.</p>
+  </section>
+
+  <section id="festival" class="section alt">
+    <h2>Terra Kontra Festival</h2>
+    <p>Every summer we host our own festival where the lineup is curated by the crew and the crowd. Expect 48 hours of non‑stop music, art installations and that indescribable TK vibe.</p>
+  </section>
+
+  <section id="djs" class="section">
+    <h2>The Crew</h2>
+    <ul class="dj-list">
+      <li>Astra</li>
+      <li>Flux</li>
+      <li>Nova</li>
+      <li>Echo</li>
+      <li>Rift</li>
+    </ul>
+  </section>
+
+  <section id="events" class="section alt">
+    <h2>Upcoming Events</h2>
+    <div id="event-list" class="events">Loading events...</div>
+  </section>
+
+  <section id="contact" class="section">
+    <h2>Join the Movement</h2>
+    <form id="subscribe-form" class="subscribe">
+      <input type="email" placeholder="Your email" required />
+      <button type="submit">Subscribe</button>
+    </form>
+    <p id="form-msg" class="msg"></p>
+  </section>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> Terra Kontra</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

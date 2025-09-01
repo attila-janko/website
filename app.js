@@ -11,22 +11,36 @@ setInterval(() => {
   heroText.textContent = slogans[sloganIndex];
 }, 3000);
 
-// event loading
-fetch('events.json')
-  .then((res) => res.json())
-  .then((events) => {
-    const list = document.getElementById('event-list');
-    list.textContent = '';
-    events.forEach((event) => {
-      const div = document.createElement('div');
-      div.className = 'event';
-      div.innerHTML = `<strong>${event.title}</strong> - ${event.date} @ ${event.location}`;
-      list.appendChild(div);
+// event loading with search support
+const loadEvents = (query = '') => {
+  const list = document.getElementById('event-list');
+  list.textContent = 'Loading events...';
+  const url = '/api/events' + (query ? `?q=${encodeURIComponent(query)}` : '');
+  fetch(url)
+    .then((res) => res.json())
+    .then((events) => {
+      list.textContent = '';
+      if (events.length === 0) {
+        list.textContent = 'No events found.';
+        return;
+      }
+      events.forEach((event) => {
+        const div = document.createElement('div');
+        div.className = 'event';
+        div.innerHTML = `<strong>${event.title}</strong> - ${event.date} @ ${event.location}`;
+        list.appendChild(div);
+      });
+    })
+    .catch(() => {
+      list.textContent = 'Error loading events.';
     });
-  })
-  .catch(() => {
-    document.getElementById('event-list').textContent = 'No events found.';
-  });
+};
+
+const search = document.getElementById('event-search');
+if (search) {
+  search.addEventListener('input', (e) => loadEvents(e.target.value));
+}
+loadEvents();
 
 // theme toggle
 const themeToggle = document.getElementById('theme-toggle');
@@ -60,8 +74,19 @@ const form = document.getElementById('subscribe-form');
 const msg = document.getElementById('form-msg');
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  msg.textContent = 'Thanks for joining the movement!';
-  form.reset();
+  const email = form.querySelector('input[type="email"]').value;
+  fetch('/api/subscribe', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  })
+    .then(() => {
+      msg.textContent = 'Thanks for joining the movement!';
+      form.reset();
+    })
+    .catch(() => {
+      msg.textContent = 'Subscription failed.';
+    });
 });
 
 // set current year

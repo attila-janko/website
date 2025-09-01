@@ -130,6 +130,13 @@ body {
   padding: 1rem 0;
 }
 
+#event-search {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 300px;
+}
+
 .subscribe input {
   padding: 0.5rem;
   margin-right: 0.5rem;

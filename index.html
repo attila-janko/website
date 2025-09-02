@@ -62,10 +62,10 @@
   <section id="contact" class="section reveal">
     <h2>Join the Movement</h2>
     <form id="subscribe-form" class="subscribe">
-      <input type="email" placeholder="Your email" required />
+      <input id="email" name="email" type="email" placeholder="Your email" autocomplete="email" required />
       <button type="submit">Subscribe</button>
     </form>
-    <p id="form-msg" class="msg"></p>
+    <p id="form-msg" class="msg" aria-live="polite"></p>
   </section>
 
   <!-- Footer -->

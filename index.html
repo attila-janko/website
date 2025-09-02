@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Main HTML structure for Terra Kontra website -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Top navigation bar with logo and menu -->
   <header class="topbar">
     <h1 class="logo"><img src="icon.svg" alt="Terra Kontra icon" class="logo-icon" />Terra Kontra</h1>
     <nav id="nav" class="nav">
@@ -20,20 +22,24 @@
     <button id="menu-toggle" aria-label="Toggle menu" class="hamburger">☰</button>
   </header>
 
+  <!-- Hero section -->
   <section id="hero" class="hero">
     <h2 id="hero-text">Feel the bass</h2>
   </section>
 
+  <!-- About section -->
   <section id="about" class="section reveal">
     <h2>About Terra Kontra</h2>
     <p>Terra Kontra is a collective of boundary pushing DJs and artists determined to shake the planet with underground sound. From warehouse raves to sun‑rise beach sets, we exist to amplify community, culture and raw energy.</p>
   </section>
 
+  <!-- Festival section -->
   <section id="festival" class="section alt reveal">
     <h2>Terra Kontra Festival</h2>
     <p>Every summer we host our own festival where the lineup is curated by the crew and the crowd. Expect 48 hours of non‑stop music, art installations and that indescribable TK vibe.</p>
   </section>
 
+  <!-- DJs section -->
   <section id="djs" class="section reveal">
     <h2>The Crew</h2>
     <ul class="dj-list">
@@ -45,12 +51,14 @@
     </ul>
   </section>
 
+  <!-- Events section with search -->
   <section id="events" class="section alt reveal">
     <h2>Upcoming Events</h2>
     <input type="text" id="event-search" placeholder="Search events..." />
     <div id="event-list" class="events">Loading events...</div>
   </section>
 
+  <!-- Contact/Subscribe section -->
   <section id="contact" class="section reveal">
     <h2>Join the Movement</h2>
     <form id="subscribe-form" class="subscribe">
@@ -60,6 +68,7 @@
     <p id="form-msg" class="msg"></p>
   </section>
 
+  <!-- Footer -->
   <footer class="footer">
     <p>© <span id="year"></span> Terra Kontra</p>
   </footer>

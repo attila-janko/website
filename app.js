@@ -11,9 +11,8 @@ setInterval(() => {
   heroText.textContent = slogans[sloganIndex];
 }, 3000);
 
-// event loading with search support (local JSON)
+// event loading with search support via API
 const list = document.getElementById('event-list');
-let eventsCache = [];
 
 const renderEvents = (events) => {
   list.textContent = '';
@@ -29,13 +28,16 @@ const renderEvents = (events) => {
   });
 };
 
-const loadEvents = () => {
+const loadEvents = (term = '') => {
   list.textContent = 'Loading events...';
-  fetch('events.json')
+  const url = new URL('/api/events', window.location.origin);
+  if (term) {
+    url.searchParams.set('q', term);
+  }
+  fetch(url)
     .then((res) => res.json())
     .then((events) => {
-      eventsCache = events;
-      renderEvents(eventsCache);
+      renderEvents(events);
     })
     .catch(() => {
       list.textContent = 'Error loading events.';
@@ -45,11 +47,7 @@ const loadEvents = () => {
 const search = document.getElementById('event-search');
 if (search) {
   search.addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-    const filtered = eventsCache.filter((event) =>
-      event.title.toLowerCase().includes(term)
-    );
-    renderEvents(filtered);
+    loadEvents(e.target.value.trim());
   });
 }
 
@@ -82,22 +80,26 @@ menuToggle.addEventListener('click', () => {
   nav.classList.toggle('open');
 });
 
-// subscribe form (local storage)
+// subscribe form (POST to backend)
 const form = document.getElementById('subscribe-form');
 const msg = document.getElementById('form-msg');
 if (form) {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const email = form.querySelector('input[type="email"]').value;
-    try {
-      const subs = JSON.parse(localStorage.getItem('tk-subscribers') || '[]');
-      subs.push(email);
-      localStorage.setItem('tk-subscribers', JSON.stringify(subs));
-      msg.textContent = 'Thanks for joining the movement!';
-      form.reset();
-    } catch {
-      msg.textContent = 'Subscription failed.';
-    }
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    })
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then(() => {
+        msg.textContent = 'Thanks for joining the movement!';
+        form.reset();
+      })
+      .catch(() => {
+        msg.textContent = 'Subscription failed.';
+      });
   });
 }
 

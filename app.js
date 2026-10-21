@@ -23,7 +23,12 @@ const renderEvents = (events) => {
   events.forEach((event) => {
     const div = document.createElement('div');
     div.className = 'event';
-    div.innerHTML = `<strong>${event.title}</strong> - ${event.date} @ ${event.location}`;
+    const title = document.createElement('strong');
+    title.textContent = String(event.title || '');
+    div.append(
+      title,
+      document.createTextNode(` - ${String(event.date || '')} @ ${String(event.location || '')}`),
+    );
     list.appendChild(div);
   });
 };
